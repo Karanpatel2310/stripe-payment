@@ -1,49 +1,44 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var path = require('path');
 
 var app = express(); //or const app = require("express")();
+var router = express.Router();
+const route = require('./routes/route.js');
 
-const keyPublishable = process.env.pk_test_lb0Dfi5JI86J9lCMkylxtE15;
-const keySecret = process.env.sk_test_hEwz0upa45UWbi4dgkeXBrhq;
+const port = 7000;
 
-const stripe = require("stripe")('sk_test_hEwz0upa45UWbi4dgkeXBrhq');
+//Connect to database
+mongoose.connect('mongodb://localhost/payment');
 
-port = 3000;
+// Database Validation 
+//If Success
+mongoose.connection.on('connected', function () {
+  console.log('Database Connection Created Successfully With Payment');
+})
+
+//If any error
+mongoose.connection.on('error', function (err) {
+  if (err) {
+    console.log('Error in database Connection :' + err);
+  }
+})
 
 //Adding Middleware
 //1.cors
 app.use(cors());
 
-app.set("view engine", "pug");
-
 //2.body-parser
 app.use(bodyParser.json());
-app.use(require("body-parser").urlencoded({extended: false}));
 
-//Routes Part
-app.get("/", (req, res) =>
-res.render("index.pug", {keyPublishable}));
+//static files
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.post("/charge", (req, res) => {
-let amount = 500;
-
-stripe.customers.create({
-  email: req.body.stripeEmail,
-  card: req.body.stripeToken
-})
-.then(customer =>
-  stripe.charges.create({
-    amount,
-    description: "Sample Charge",
-    currency: "usd",
-    customer: customer.id
-  }))
-.catch(err => console.log("Error:", err))
-.then(charge => res.render("charge.pug"));
-});
-
+//Routes
+app.use('/api', route);
+// app.use('/', route);
 app.listen(port, function () {
-    console.log("Server has started With Port :" + port);
+  console.log("Server has started With Port :" + port);
 });
