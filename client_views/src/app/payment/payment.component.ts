@@ -36,7 +36,7 @@ export class PaymentComponent implements OnInit {
     // console.log(newPayment);
     this.paymentService.addPayment(newPayment)
       .subscribe(payment => {
-        this.payments.push(payment);
+        // this.payments.push(payment);
           this.email = '' ;
           this.amount = null;
           this.card_number = null;
