@@ -18,7 +18,7 @@
         <div class='form-group'>
           <div class='col-xs-12 form-group card required'>
             <label class='control-label'>Card Number</label>
-            <input autocomplete='off' class='form-control card-text' type='number' name="card_number" [(ngModel)]="card_number">
+            <input autocomplete='off' class='form-control' type="tel" pattern="\w{16}" name="card_number" [(ngModel)]="card_number" required>
           </div>
         </div>
         <div class='form-group'>

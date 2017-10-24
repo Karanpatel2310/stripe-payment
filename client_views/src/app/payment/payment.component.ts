@@ -33,10 +33,9 @@ export class PaymentComponent implements OnInit {
       exp_month: this.exp_month,
       exp_year: this.exp_year
     };
-    // console.log(newPayment);
+   // console.log(newPayment);
     this.paymentService.addPayment(newPayment)
       .subscribe(payment => {
-        // this.payments.push(payment);
           this.email = '' ;
           this.amount = null;
           this.card_number = null;
