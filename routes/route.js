@@ -44,10 +44,6 @@ router.post('/payment', function (req, res, next) {
                 email: email,
                 source: token.id
             }).then(function (customer) {
-                // console.log('your customer is ');
-                // console.log(customer);                
-                // console.log('your error is ');
-                // console.log(error);
                 if (customer) {
                     // console.log(customer);
                     stripe.charges.create({
@@ -57,8 +53,7 @@ router.post('/payment', function (req, res, next) {
                         customer: customer.id
                     }).then(function (charge) {
                         const status = charge;
-                        console.log('complete result is here');
-                        console.log(charge);
+                        // console.log(charge);
                         let newPayment = new Payment({
                             id:status.id,
                             email: email,
@@ -76,20 +71,15 @@ router.post('/payment', function (req, res, next) {
                             else {
                                 console.log(details);
                                 res.json({
-                                    msg: 'Your Transation is done successfully'
+                                    msg: 'Done'
                                 });
                             }
                         })
-                        // res.json({ charge });
                     }, function (error) {
-                        console.log('i am new error');
-                        console.log(error);
                         res.json({ error });
                     });
                 }
             }, function (error) {
-                // CVC error
-                console.log(error);
                 res.json({ error });
             }
                 );

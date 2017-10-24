@@ -4,6 +4,5 @@ export class Payment {
     amount: String;
     card_number: String;
     cvc: String;
-    exp_month: String;
-    exp_year: String;
+    expiry: String;
 }
